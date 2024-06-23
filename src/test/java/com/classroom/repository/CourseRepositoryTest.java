@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,6 +54,20 @@ public class CourseRepositoryTest {
 
         assertEquals(2, mainCount);
         assertEquals(1, secondaryCount);
+    }
+
+    @Test
+    public void whenFindByNameThenReturnExistingCourse() {
+        Optional<Course> course = courseRepository.findByName(COURSE_NAME_HISTORY);
+
+        assertTrue(course.isPresent());
+    }
+
+    @Test
+    public void whenFindByNameWithNonExistingNameReturnEmpty() {
+        Optional<Course> course = courseRepository.findByName("Geography");
+
+        assertTrue(course.isEmpty());
     }
 
     @Test
