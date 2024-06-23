@@ -14,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentResponseDTO {
 
-    private String id;
+    private String studentId;
     private String studentName;
-    private int age;
-    private String group;
+    private int studentAge;
+    private String studentGroupName;
     private List<CourseResponseDTO> studentCourses;
 }

@@ -38,24 +38,24 @@ public class TeacherRepositoryTest {
         Course mainCourse = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
         Course secondaryCourse = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
 
-        // Create Students
-        Teacher student1 = new Teacher(TEACHER_NAME_1, 38, GROUP_NAME_1, Set.of(mainCourse));
-        Teacher student2 = new Teacher(TEACHER_NAME_2, 46, GROUP_NAME_1, Set.of(secondaryCourse));
-        Teacher student3 = new Teacher(TEACHER_NAME_3, 29, GROUP_NAME_2, Set.of(mainCourse, secondaryCourse));
+        // Create Teachers
+        Teacher teacher1 = new Teacher(TEACHER_NAME_1, 38, GROUP_NAME_1, Set.of(mainCourse));
+        Teacher teacher2 = new Teacher(TEACHER_NAME_2, 46, GROUP_NAME_1, Set.of(secondaryCourse));
+        Teacher teacher3 = new Teacher(TEACHER_NAME_3, 29, GROUP_NAME_2, Set.of(mainCourse, secondaryCourse));
 
-        teacherRepository.save(student1);
-        teacherRepository.save(student2);
-        teacherRepository.save(student3);
+        teacherRepository.save(teacher1);
+        teacherRepository.save(teacher2);
+        teacherRepository.save(teacher3);
     }
 
     @Test
-    public void whenCountStudentsThenReturnCorrectCount() {
+    public void whenCountTeachersThenReturnCorrectCount() {
         long count = teacherRepository.teachersCount();
         assertEquals(3, count);
     }
 
     @Test
-    public void whenFindStudentsByCourseThenReturnCorrectStudents() {
+    public void whenFindTeachersByCourseThenReturnCorrectTeachers() {
         Set<Teacher> mainCourseTeachers = teacherRepository.findTeachersByCourse(COURSE_NAME_MATHEMATICS);
         Set<Teacher> secondaryCourseTeachers = teacherRepository.findTeachersByCourse(COURSE_NAME_HISTORY);
 
@@ -69,7 +69,7 @@ public class TeacherRepositoryTest {
     }
 
     @Test
-    public void whenFindStudentsByGroupThenReturnCorrectStudents() {
+    public void whenFindTeachersByGroupThenReturnCorrectTeachers() {
         Set<Teacher> groupA1Teachers = teacherRepository.findTeachersByGroup(GROUP_NAME_1);
         Set<Teacher> groupA2Teachers= teacherRepository.findTeachersByGroup(GROUP_NAME_2);
 

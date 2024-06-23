@@ -27,8 +27,8 @@ public class StudentResource {
     public ResponseEntity<StudentResponseDTO> createStudent(
             @RequestBody CreateStudentRequestDTO createStudentRequest
     ) {
-        StudentResponseDTO createdCourse = studentService.createStudent(createStudentRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
+        StudentResponseDTO createdStudent = studentService.createStudent(createStudentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 
     @PutMapping("/{id}")
@@ -44,16 +44,16 @@ public class StudentResource {
     public ResponseEntity<StudentResponseDTO> enrollStudentToCourse(
             @RequestBody EnrollStudentRequestDTO enrollStudentRequest
     ) {
-        StudentResponseDTO createdCourse = studentService.enrollToCourse(enrollStudentRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(createdCourse);
+        StudentResponseDTO enrolledStudent = studentService.enrollToCourse(enrollStudentRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(enrolledStudent);
     }
 
     @PostMapping("/leave")
     public ResponseEntity<StudentResponseDTO> leaveStudentFromCourse(
             @RequestBody LeaveStudentCourseRequestDTO leaveStudentCourseRequest
     ) {
-        StudentResponseDTO createdCourse = studentService.removeStudentFromCourse(leaveStudentCourseRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(createdCourse);
+        StudentResponseDTO studentResponse = studentService.removeStudentFromCourse(leaveStudentCourseRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(studentResponse);
     }
 
     @DeleteMapping("/{id}")

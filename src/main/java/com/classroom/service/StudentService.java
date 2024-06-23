@@ -31,17 +31,17 @@ public class StudentService {
             "Student with ID %s already enrolled for course with name: %s";
 
     private static final String STUDENT_NOT_ENROLLED_FOR_THIS_COURSE =
-            "Student with ID %s is not  enrolled for course with name: %s";
+            "Student with ID %s is not enrolled for course with name: %s";
     private static final String COURSE_DOES_NOT_EXISTS = "Course with name %s does not exists";
 
 
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
 
-    public StudentResponseDTO createStudent(CreateStudentRequestDTO createCourseRequest) {
-        String studentName = createCourseRequest.getName();
-        int age = createCourseRequest.getAge();
-        String groupName = createCourseRequest.getGroup();
+    public StudentResponseDTO createStudent(CreateStudentRequestDTO createStudentRequest) {
+        String studentName = createStudentRequest.getStudentName();
+        int age = createStudentRequest.getStudentAge();
+        String groupName = createStudentRequest.getStudentGroupName();
         Optional<Student> existingStudent = studentRepository.findByNameAndStudentGroupAndAge(
                 studentName,
                 groupName,
@@ -54,10 +54,10 @@ public class StudentService {
 
         studentRepository.save(student);
         return StudentResponseDTO.builder()
-                .id(student.getId().toString())
+                .studentId(student.getId().toString())
                 .studentName(student.getName())
-                .age(student.getAge())
-                .group(student.getStudentGroup())
+                .studentAge(student.getAge())
+                .studentGroupName(student.getStudentGroup())
                 .build();
     }
 
@@ -67,15 +67,15 @@ public class StudentService {
             throw new EntityNotFoundException(String.format(STUDENT_DOES_NOT_EXISTS, id));
         }
         Student student = existingStudent.get();
-        student.setName(updateStudentRequest.getName());
-        student.setAge(updateStudentRequest.getAge());
-        student.setStudentGroup(updateStudentRequest.getGroup());
+        student.setName(updateStudentRequest.getStudentName());
+        student.setAge(updateStudentRequest.getStudentAge());
+        student.setStudentGroup(updateStudentRequest.getStudentGroupName());
 
         return StudentResponseDTO.builder()
-                .id(student.getId().toString())
+                .studentId(student.getId().toString())
                 .studentName(student.getName())
-                .age(student.getAge())
-                .group(student.getStudentGroup())
+                .studentAge(student.getAge())
+                .studentGroupName(student.getStudentGroup())
                 .build();
     }
 
@@ -106,10 +106,10 @@ public class StudentService {
                         .build()
                 ).toList();
         return StudentResponseDTO.builder()
-                .id(student.getId().toString())
+                .studentId(student.getId().toString())
                 .studentName(student.getName())
-                .age(student.getAge())
-                .group(student.getStudentGroup())
+                .studentAge(student.getAge())
+                .studentGroupName(student.getStudentGroup())
                 .studentCourses(studentCoursesList)
                 .build();
     }
@@ -140,10 +140,10 @@ public class StudentService {
                         .build()
                 ).toList();
         return StudentResponseDTO.builder()
-                .id(student.getId().toString())
+                .studentId(student.getId().toString())
                 .studentName(student.getName())
-                .age(student.getAge())
-                .group(student.getStudentGroup())
+                .studentAge(student.getAge())
+                .studentGroupName(student.getStudentGroup())
                 .studentCourses(studentCoursesList)
                 .build();
     }

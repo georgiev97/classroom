@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class CreateStudentRequestDTO {
 
     @NotBlank(message = "Name cannot be empty")
-    private String name;
+    private String studentName;
 
-    private int age;
+    private int studentAge;
 
     @NotBlank(message = "Group cannot be empty")
-    private String group;
+    private String studentGroupName;
 }

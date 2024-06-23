@@ -1,10 +1,12 @@
 package com.classroom.repository;
 
+import com.classroom.entity.Student;
 import com.classroom.entity.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +15,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, UUID> {
 
     @Query("SELECT COUNT(teacher) FROM Teacher teacher")
     long teachersCount();
+
+    Optional<Teacher> findByNameAndTeacherGroupAndAge(String teacherName, String teacherGroup, int age);
 
     @Query("SELECT teacher FROM Teacher teacher JOIN teacher.courses courses WHERE courses.name = :courseName")
     Set<Teacher> findTeachersByCourse(String courseName);

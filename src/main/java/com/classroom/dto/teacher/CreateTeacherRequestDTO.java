@@ -1,22 +1,22 @@
 package com.classroom.dto.teacher;
 
-import com.classroom.dto.course.CourseResponseDTO;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherResponseDTO {
+public class CreateTeacherRequestDTO {
 
-    private String teacherId;
+    @NotBlank(message = "Name cannot be empty")
     private String teacherName;
+
     private int teacherAge;
+
+    @NotBlank(message = "Group cannot be empty")
     private String teacherGroupName;
-    private List<CourseResponseDTO> teacherCourses;
 }

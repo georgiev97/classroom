@@ -71,9 +71,9 @@ public class StudentResourceTest {
     void createStudentSuccess() throws Exception {
         // arrange
         CreateStudentRequestDTO createStudentRequest = CreateStudentRequestDTO.builder()
-                .name("Kremena")
-                .group("B1")
-                .age(25)
+                .studentName("Kremena")
+                .studentGroupName("B1")
+                .studentAge(25)
                 .build();
         // act
         MvcResult mvcResult = mockMvc.perform(
@@ -89,18 +89,18 @@ public class StudentResourceTest {
                 new TypeReference<StudentResponseDTO>() {
                 });
 
-        assertEquals(createStudentRequest.getName(), student.getStudentName());
-        assertEquals(createStudentRequest.getAge(), student.getAge());
-        assertEquals(createStudentRequest.getGroup(), student.getGroup());
+        assertEquals(createStudentRequest.getStudentName(), student.getStudentName());
+        assertEquals(createStudentRequest.getStudentAge(), student.getStudentAge());
+        assertEquals(createStudentRequest.getStudentGroupName(), student.getStudentGroupName());
     }
 
     @Test
     void createStudentAlreadyExists() throws Exception {
         // arrange
         CreateStudentRequestDTO createStudentRequest = CreateStudentRequestDTO.builder()
-                .name(STUDENT_NAME_2)
-                .group(GROUP_NAME_1)
-                .age(22)
+                .studentName(STUDENT_NAME_2)
+                .studentGroupName(GROUP_NAME_1)
+                .studentAge(22)
                 .build();
         // act
         mockMvc.perform(
@@ -117,9 +117,9 @@ public class StudentResourceTest {
         // arrange
         Student student = studentRepository.findByNameAndStudentGroupAndAge(STUDENT_NAME_1, GROUP_NAME_1, 20).get();
         CreateStudentRequestDTO updateStudentRequest = CreateStudentRequestDTO.builder()
-                .name(STUDENT_NAME_1)
-                .group(GROUP_NAME_1)
-                .age(21)
+                .studentName(STUDENT_NAME_1)
+                .studentGroupName(GROUP_NAME_1)
+                .studentAge(21)
                 .build();
         // act
         MvcResult mvcResult = mockMvc.perform(
@@ -135,18 +135,18 @@ public class StudentResourceTest {
                 new TypeReference<StudentResponseDTO>() {
                 });
 
-        assertEquals(updateStudentRequest.getName(), updateStudent.getStudentName());
-        assertEquals(updateStudentRequest.getAge(), updateStudent.getAge());
-        assertEquals(updateStudentRequest.getGroup(), updateStudent.getGroup());
+        assertEquals(updateStudentRequest.getStudentName(), updateStudent.getStudentName());
+        assertEquals(updateStudentRequest.getStudentAge(), updateStudent.getStudentAge());
+        assertEquals(updateStudentRequest.getStudentGroupName(), updateStudent.getStudentGroupName());
     }
 
     @Test
     void updateStudentFailure() throws Exception {
         // arrange
         CreateStudentRequestDTO updateStudentRequest = CreateStudentRequestDTO.builder()
-                .name(STUDENT_NAME_1)
-                .group(GROUP_NAME_1)
-                .age(21)
+                .studentName(STUDENT_NAME_1)
+                .studentGroupName(GROUP_NAME_1)
+                .studentAge(21)
                 .build();
         // act
         mockMvc.perform(
@@ -208,7 +208,7 @@ public class StudentResourceTest {
                 new TypeReference<StudentResponseDTO>() {
                 });
 
-        assertEquals(enrollStudentRequest.getStudentId(), enrolledStudent.getId());
+        assertEquals(enrollStudentRequest.getStudentId(), enrolledStudent.getStudentId());
         assertTrue( enrolledStudent.getStudentCourses().stream().map(CourseResponseDTO::getCourseName)
                 .toList().contains(enrollStudentRequest.getCourseName()));
         assertTrue( enrolledStudent.getStudentCourses().stream().map(CourseResponseDTO::getCourseTypeName)
@@ -242,13 +242,12 @@ public class StudentResourceTest {
                 new TypeReference<StudentResponseDTO>() {
                 });
 
-        assertEquals(leaveStudentCourseRequest.getStudentId(), studentResponse.getId());
+        assertEquals(leaveStudentCourseRequest.getStudentId(), studentResponse.getStudentId());
         assertTrue(studentResponse.getStudentCourses().isEmpty());
     }
 
-
-
     private void setUpTestData() {
+        // Create Courses
         Course mainCourse = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
         Course secondaryCourse = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
         courseRepository.save(mainCourse);

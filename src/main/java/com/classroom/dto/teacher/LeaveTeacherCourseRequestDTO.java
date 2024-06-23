@@ -10,14 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnrollTeacherRequestDTO {
+public class LeaveTeacherCourseRequestDTO {
 
     @NotBlank(message = "Student ID cannot be empty")
     private String teacherId;
 
     @NotBlank(message = "Course name cannot be empty")
     private String courseName;
-
-    @NotBlank(message = "Course Type cannot be empty")
-    private String courseType;
 }
