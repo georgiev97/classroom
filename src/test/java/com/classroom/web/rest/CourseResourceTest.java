@@ -57,7 +57,7 @@ public class CourseResourceTest {
 
         // act
         MvcResult mvcResult = mockMvc.perform(
-                get("/api/v1/course"))
+                get("/api/v1/courses"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -76,7 +76,7 @@ public class CourseResourceTest {
 
         // act
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/course/{courseName}", COURSE_NAME_HISTORY))
+                        MockMvcRequestBuilders.get("/api/v1/courses/{courseName}", COURSE_NAME_HISTORY))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -95,13 +95,13 @@ public class CourseResourceTest {
 
         // act
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/course/{courseName}", "Physics"))
+                        MockMvcRequestBuilders.get("/api/v1/courses/{courseName}", "Physics"))
                 .andExpect(status().isNotFound());
         // assert
     }
 
     @Test
-    void createCourse() throws Exception {
+    void createCourseSuccess() throws Exception {
         // arrange
         CreateCourseRequestDTO createCourseRequest = CreateCourseRequestDTO.builder()
                         .courseName("Physics")
@@ -109,7 +109,7 @@ public class CourseResourceTest {
                         .build();
         // act
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/course")
+                        MockMvcRequestBuilders.post("/api/v1/courses")
                                 .content(objectMapper.writeValueAsString(createCourseRequest))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -134,7 +134,7 @@ public class CourseResourceTest {
                 .build();
         // act
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/course")
+                        MockMvcRequestBuilders.post("/api/v1/courses")
                                 .content(objectMapper.writeValueAsString(createCourseRequest))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -142,18 +142,9 @@ public class CourseResourceTest {
     }
 
     private void setUpTestData() {
-        Course course1 = Course.builder()
-                .name(COURSE_NAME_MATHEMATICS)
-                .type(CourseType.MAIN)
-                .build();
-        Course course2 = Course.builder()
-                .name(COURSE_NAME_HISTORY)
-                .type(CourseType.SECONDARY)
-                .build();
-        Course course3 = Course.builder()
-                .name(COURSE_NAME_SCIENCE)
-                .type(CourseType.MAIN)
-                .build();
+        Course course1 = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
+        Course course2 = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
+        Course course3 = new Course(COURSE_NAME_SCIENCE, CourseType.MAIN);
 
         courseRepository.save(course1);
         courseRepository.save(course2);

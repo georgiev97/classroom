@@ -47,15 +47,15 @@ public class CourseServiceTest {
                 .courseName("Math")
                 .courseTypeName("MAIN")
                 .build();
-        Course course = Course.builder()
-                .name(request.getCourseName())
-                .type(CourseType.MAIN)
-                .build();
-        Course savedCourse = Course.builder()
-                .id(UUID.randomUUID())
-                .name(request.getCourseName())
-                .type(CourseType.MAIN)
-                .build();
+        Course course = new Course(
+                request.getCourseName(),
+                CourseType.valueOf(request.getCourseTypeName())
+        );
+        Course savedCourse = new Course(
+                UUID.randomUUID(),
+                request.getCourseName(),
+                CourseType.valueOf(request.getCourseTypeName())
+        );
 
 
         when(courseRepository.existsByName(request.getCourseName())).thenReturn(false);
@@ -97,8 +97,8 @@ public class CourseServiceTest {
     public void testGetAllCourses() {
         // arrange
         List<Course> courses = new ArrayList<>();
-        courses.add(Course.builder().id(UUID.randomUUID()).name("Math").type(CourseType.MAIN).build());
-        courses.add(Course.builder().id(UUID.randomUUID()).name("Science").type(CourseType.SECONDARY).build());
+        courses.add(new Course(UUID.randomUUID(),"Math", CourseType.MAIN));
+        courses.add(new Course(UUID.randomUUID(),"Science", CourseType.SECONDARY));
 
         when(courseRepository.findAll()).thenReturn(courses);
 
@@ -121,7 +121,7 @@ public class CourseServiceTest {
     public void testGetCourseByNameSuccess() {
         // arrange
         String courseName = "Math";
-        Course course = Course.builder().id(UUID.randomUUID()).name(courseName).type(CourseType.MAIN).build();
+        Course course = new Course(UUID.randomUUID(),courseName, CourseType.MAIN);
 
         when(courseRepository.findByName(courseName)).thenReturn(Optional.of(course));
 

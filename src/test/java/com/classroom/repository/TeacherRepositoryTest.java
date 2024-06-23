@@ -35,34 +35,13 @@ public class TeacherRepositoryTest {
     @BeforeEach
     void setUp() {
         // Create Courses
-        Course mainCourse = Course.builder()
-                .name(COURSE_NAME_MATHEMATICS)
-                .type(CourseType.MAIN)
-                .build();
-        Course secondaryCourse = Course.builder()
-                .name(COURSE_NAME_HISTORY)
-                .type(CourseType.SECONDARY)
-                .build();
+        Course mainCourse = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
+        Course secondaryCourse = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
 
         // Create Students
-        Teacher student1 = Teacher.builder()
-                .name(TEACHER_NAME_1)
-                .age(38)
-                .teacherGroup(GROUP_NAME_1)
-                .courses(Set.of(mainCourse))
-                .build();
-        Teacher student2 = Teacher.builder()
-                .name(TEACHER_NAME_2)
-                .age(46)
-                .teacherGroup(GROUP_NAME_1)
-                .courses(Set.of(secondaryCourse))
-                .build();
-        Teacher student3 = Teacher.builder()
-                .name(TEACHER_NAME_3)
-                .age(29)
-                .teacherGroup(GROUP_NAME_2)
-                .courses(Set.of(mainCourse, secondaryCourse))
-                .build();
+        Teacher student1 = new Teacher(TEACHER_NAME_1, 38, GROUP_NAME_1, Set.of(mainCourse));
+        Teacher student2 = new Teacher(TEACHER_NAME_2, 46, GROUP_NAME_1, Set.of(secondaryCourse));
+        Teacher student3 = new Teacher(TEACHER_NAME_3, 29, GROUP_NAME_2, Set.of(mainCourse, secondaryCourse));
 
         teacherRepository.save(student1);
         teacherRepository.save(student2);

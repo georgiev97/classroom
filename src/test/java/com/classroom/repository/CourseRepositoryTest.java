@@ -29,18 +29,9 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Course course1 = Course.builder()
-                        .name(COURSE_NAME_MATHEMATICS)
-                        .type(CourseType.MAIN)
-                        .build();
-        Course course2 = Course.builder()
-                .name(COURSE_NAME_HISTORY)
-                .type(CourseType.SECONDARY)
-                .build();
-        Course course3 = Course.builder()
-                .name(COURSE_NAME_SCIENCE)
-                .type(CourseType.MAIN)
-                .build();
+        Course course1 = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
+        Course course2 = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
+        Course course3 = new Course(COURSE_NAME_SCIENCE, CourseType.MAIN);
 
         courseRepository.save(course1);
         courseRepository.save(course2);

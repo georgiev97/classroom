@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,34 +36,13 @@ public class StudentRepositoryTest {
     @BeforeEach
     void setUp() {
         // Create Courses
-        Course mainCourse = Course.builder()
-                .name(COURSE_NAME_MATHEMATICS)
-                .type(CourseType.MAIN)
-                .build();
-        Course secondaryCourse = Course.builder()
-                .name(COURSE_NAME_HISTORY)
-                .type(CourseType.SECONDARY)
-                .build();
+        Course mainCourse = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
+        Course secondaryCourse = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
 
         // Create Students
-        Student student1 = Student.builder()
-                        .name(STUDENT_NAME_1)
-                        .age(20)
-                        .studentGroup(GROUP_NAME_1)
-                        .courses(Set.of(mainCourse))
-                        .build();
-        Student student2 = Student.builder()
-                        .name(STUDENT_NAME_2)
-                        .age(22)
-                        .studentGroup(GROUP_NAME_1)
-                        .courses(Set.of(secondaryCourse))
-                        .build();
-        Student student3 = Student.builder()
-                        .name(STUDENT_NAME_3)
-                        .age(24)
-                        .studentGroup(GROUP_NAME_2)
-                        .courses(Set.of(mainCourse, secondaryCourse))
-                        .build();
+        Student student1 = new Student(STUDENT_NAME_1, 20, GROUP_NAME_1, Set.of(mainCourse));
+        Student student2 = new Student(STUDENT_NAME_2, 22, GROUP_NAME_1, Set.of(secondaryCourse));
+        Student student3 = new Student(STUDENT_NAME_3, 24, GROUP_NAME_2, Set.of(mainCourse, secondaryCourse));
 
         studentRepository.save(student1);
         studentRepository.save(student2);
@@ -109,5 +89,20 @@ public class StudentRepositoryTest {
         assertEquals(1, olderStudentsInMainCourse.size());
 
         assertTrue(olderStudentsInMainCourse.stream().anyMatch(student -> student.getName().equals(STUDENT_NAME_3)));
+    }
+
+    @Test
+    public void whenFindByNameAndAgeAndGroupCorrectResult() {
+        Optional<Student> result = studentRepository.findByNameAndStudentGroupAndAge(STUDENT_NAME_3, GROUP_NAME_2,   24);
+
+        assertTrue(result.isPresent());
+        assertEquals(STUDENT_NAME_3, result.get().getName());
+    }
+
+    @Test
+    public void whenFindByNameAndAgeAndGroupNoResult() {
+        Optional<Student> result = studentRepository.findByNameAndStudentGroupAndAge(STUDENT_NAME_3, GROUP_NAME_2,   20);
+
+        assertTrue(result.isEmpty());
     }
 }

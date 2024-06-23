@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/course")
+@RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
 public class CourseResource {
 

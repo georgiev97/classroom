@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +14,8 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     @Query("SELECT COUNT(student) FROM Student student")
     long studentsCount();
+
+    Optional<Student> findByNameAndStudentGroupAndAge(String studentName, String studentGroup, int age);
 
     @Query("SELECT student FROM Student student JOIN student.courses courses WHERE courses.name = :courseName")
     Set<Student> findStudentsByCourse(String courseName);

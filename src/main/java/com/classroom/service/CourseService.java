@@ -27,11 +27,8 @@ public class CourseService {
             throw new EntityExistsException(String.format(COURSE_ALREADY_EXISTS, courseName));
         }
         CourseType courseType = CourseType.fromString(courseTypeName);
-        courseRepository.save(Course.builder()
-                .name(courseName)
-                .type(courseType)
-                .build()
-        );
+        Course course = new Course(courseName, courseType);
+        courseRepository.save(course);
 
         return CourseResponseDTO.builder()
                 .courseName(courseName)

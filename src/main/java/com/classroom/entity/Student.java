@@ -10,18 +10,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "student")
 public class Student {
@@ -49,6 +46,28 @@ public class Student {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private Set<Course> courses;
+    private Set<Course> courses = new HashSet<>();
 
+    public Student(UUID id, String name, int age, String studentGroup, Set<Course> courses) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.studentGroup = studentGroup;
+        this.courses = new HashSet<>(courses);
+    }
+
+    public Student(String name, int age, String studentGroup, Set<Course> courses) {
+        this.name = name;
+        this.age = age;
+        this.studentGroup = studentGroup;
+        this.courses = new HashSet<>(courses);
+    }
+
+    public Student(String name, int age, String studentGroup) {
+        this.name = name;
+        this.age = age;
+        this.studentGroup = studentGroup;
+    }
+
+    public Student(){}
 }

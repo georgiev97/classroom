@@ -10,18 +10,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "course")
 public class Course {
@@ -37,8 +34,29 @@ public class Course {
     private CourseType type;
 
     @ManyToMany(mappedBy = "courses")
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
 
     @ManyToMany(mappedBy = "courses")
-    private Set<Teacher> teachers;
+    private Set<Teacher> teachers = new HashSet<>();
+
+    public Course(UUID id, String name, CourseType type, Set<Student> students, Set<Teacher> teachers) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.students = students;
+        this.teachers = new HashSet<>(teachers);
+    }
+
+    public Course(UUID id, String name, CourseType type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+    }
+
+    public Course(String name, CourseType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public Course() {}
 }
