@@ -11,14 +11,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 import java.util.UUID;
@@ -31,7 +25,7 @@ public class Teacher {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.UUID, generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "teacher_id", nullable = false)
     private UUID id;
 
@@ -41,8 +35,8 @@ public class Teacher {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "group", nullable = false)
-    private String group;
+    @Column(name = "teacher_group", nullable = false)
+    private String teacherGroup;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

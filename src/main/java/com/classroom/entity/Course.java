@@ -1,7 +1,10 @@
 package com.classroom.entity;
 
 import com.classroom.enumartion.CourseType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -19,10 +23,13 @@ import java.util.Set;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "course_id", nullable = false)
+    private UUID id;
 
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
     private CourseType type;
 
     @ManyToMany(mappedBy = "courses")

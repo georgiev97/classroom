@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,19 +23,18 @@ import java.util.UUID;
 public class Student {
 
     @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.UUID, generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "student_id", nullable = false)
     private UUID id;
 
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "age", nullable = false)
-
     private int age;
-    @Column(name = "group", nullable = false)
 
-    private String group;
+    @Column(name = "student_group", nullable = false)
+    private String studentGroup;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
