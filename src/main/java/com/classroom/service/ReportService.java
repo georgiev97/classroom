@@ -2,10 +2,8 @@ package com.classroom.service;
 
 import com.classroom.dto.course.CourseResponseDTO;
 import com.classroom.dto.report.StudentAndTeacherReportResponseDTO;
-import com.classroom.dto.report.StudentDTO;
-import com.classroom.dto.report.TeacherDTO;
 import com.classroom.dto.student.StudentResponseDTO;
-import com.classroom.entity.Course;
+import com.classroom.dto.teacher.TeacherResponseDTO;
 import com.classroom.entity.Student;
 import com.classroom.entity.Teacher;
 import com.classroom.enumartion.CourseType;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,32 +38,32 @@ public class ReportService {
         return courseRepository.countCoursesByType(type);
     }
 
-    public List<StudentResponseDTO> getStudentsByCourse(String courseName) {
+    public Set<StudentResponseDTO> getStudentsByCourse(String courseName) {
         Set<Student> students = studentRepository.findStudentsByCourse(courseName);
-        return mapEntityToDTO(students);
+        return mapStudentsToDTO(students);
     }
 
-    public List<StudentResponseDTO> getStudentsByGroup(String groupName) {
+    public Set<StudentResponseDTO> getStudentsByGroup(String groupName) {
         Set<Student> students = studentRepository.findStudentsByGroup(groupName);
-        return mapEntityToDTO(students);
+        return mapStudentsToDTO(students);
     }
 
-    public List<StudentResponseDTO> getStudentsByAgeAndCourse(int age, String courseName) {
+    public Set<StudentResponseDTO> getStudentsByAgeAndCourse(int age, String courseName) {
         Set<Student> students = studentRepository.findStudentsOlderThanAgeInCourse(age, courseName);
-        return mapEntityToDTO(students);
+        return mapStudentsToDTO(students);
     }
 
     public StudentAndTeacherReportResponseDTO getStudentsAndTeachersByCourseAndGroup(String courseName, String groupName) {
         Set<Student> students = studentRepository.findStudentsByCourseAndGroup(courseName, groupName);
         Set<Teacher> teachers = teacherRepository.findTeachersByCourseAndGroup(courseName, groupName);
 
-        Set<StudentDTO> studentsResponse = mapStudentsToDTO(students);
-        Set<TeacherDTO> teacherResponse = mapTeacherToDTO(teachers);
+        Set<StudentResponseDTO> studentsResponse = mapStudentsToDTO(students);
+        Set<TeacherResponseDTO> teacherResponse = mapTeachersToDTO(teachers);
 
         return new StudentAndTeacherReportResponseDTO(studentsResponse, teacherResponse);
     }
 
-    private List<StudentResponseDTO> mapEntityToDTO(Collection<Student> students) {
+    private Set<StudentResponseDTO> mapStudentsToDTO(Collection<Student> students) {
         return students.stream()
                 .map(student -> StudentResponseDTO.builder()
                         .studentId(student.getId().toString())
@@ -78,37 +75,27 @@ public class ReportService {
                                                         .courseName(course.getName())
                                                         .courseTypeName(course.getType().name())
                                                         .build()
-                                        ).toList()
+                                        ).collect(Collectors.toSet())
                         )
                         .build())
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    private Set<StudentDTO> mapStudentsToDTO(Collection<Student> students) {
-        return students.stream()
-                .map(student -> StudentDTO.builder()
-                        .studentId(student.getId().toString())
-                        .studentName(student.getName())
-                        .studentAge(student.getAge())
-                        .studentGroupName(student.getStudentGroup())
-                        .courseNames(student.getCourses().stream()
-                                .map(Course::getName)
-                                .collect(Collectors.toSet()))
-                        .build()
-                ).collect(Collectors.toSet());
-    }
-
-    private Set<TeacherDTO> mapTeacherToDTO(Collection<Teacher> teachers) {
+    private Set<TeacherResponseDTO> mapTeachersToDTO(Collection<Teacher> teachers) {
         return teachers.stream()
-                .map(teacher -> TeacherDTO.builder()
+                .map(teacher -> TeacherResponseDTO.builder()
                         .teacherId(teacher.getId().toString())
                         .teacherName(teacher.getName())
                         .teacherAge(teacher.getAge())
                         .teacherGroupName(teacher.getTeacherGroup())
-                        .courseNames(teacher.getCourses().stream()
-                                .map(Course::getName)
-                                .collect(Collectors.toSet()))
-                        .build()
-                ).collect(Collectors.toSet());
+                        .teacherCourses(teacher.getCourses().stream()
+                                .map(course -> CourseResponseDTO.builder()
+                                        .courseName(course.getName())
+                                        .courseTypeName(course.getType().name())
+                                        .build()
+                                ).collect(Collectors.toSet())
+                        )
+                        .build())
+                .collect(Collectors.toSet());
     }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,5 +18,5 @@ public class StudentResponseDTO {
     private String studentName;
     private int studentAge;
     private String studentGroupName;
-    private List<CourseResponseDTO> studentCourses;
+    private Set<CourseResponseDTO> studentCourses;
 }

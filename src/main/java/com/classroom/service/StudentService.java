@@ -15,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,12 +99,12 @@ public class StudentService {
         student.getCourses().add(course);
         studentRepository.save(student);
 
-        List<CourseResponseDTO> studentCoursesList = studentCourses.stream()
+        Set<CourseResponseDTO> studentCoursesList = studentCourses.stream()
                 .map(c -> CourseResponseDTO.builder()
                         .courseName(c.getName())
                         .courseTypeName(c.getType().name())
                         .build()
-                ).toList();
+                ).collect(Collectors.toSet());
         return StudentResponseDTO.builder()
                 .studentId(student.getId().toString())
                 .studentName(student.getName())
@@ -133,12 +133,12 @@ public class StudentService {
         student.getCourses().remove(course);
         course.getStudents().remove(student);
         studentRepository.save(student);
-        List<CourseResponseDTO> studentCoursesList = studentCourses.stream()
+        Set<CourseResponseDTO> studentCoursesList = studentCourses.stream()
                 .map(c -> CourseResponseDTO.builder()
                         .courseName(c.getName())
                         .courseTypeName(c.getType().name())
                         .build()
-                ).toList();
+                ).collect(Collectors.toSet());
         return StudentResponseDTO.builder()
                 .studentId(student.getId().toString())
                 .studentName(student.getName())

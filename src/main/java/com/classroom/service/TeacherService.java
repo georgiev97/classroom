@@ -6,7 +6,6 @@ import com.classroom.dto.teacher.EnrollTeacherRequestDTO;
 import com.classroom.dto.teacher.LeaveTeacherCourseRequestDTO;
 import com.classroom.dto.teacher.TeacherResponseDTO;
 import com.classroom.entity.Course;
-import com.classroom.entity.Student;
 import com.classroom.entity.Teacher;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.TeacherRepository;
@@ -16,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,12 +103,12 @@ public class TeacherService {
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 
-        List<CourseResponseDTO> teacherCoursesList = teacherCourses.stream()
+        Set<CourseResponseDTO> teacherCoursesList = teacherCourses.stream()
                 .map(c -> CourseResponseDTO.builder()
                         .courseName(c.getName())
                         .courseTypeName(c.getType().name())
                         .build()
-                ).toList();
+                ).collect(Collectors.toSet());
         return TeacherResponseDTO.builder()
                 .teacherId(teacher.getId().toString())
                 .teacherName(teacher.getName())
@@ -142,12 +141,13 @@ public class TeacherService {
         teacher.getCourses().remove(course);
         course.getTeachers().remove(teacher);
         teacherRepository.save(teacher);
-        List<CourseResponseDTO> teacherCoursesList = teacherCourses.stream()
+
+        Set<CourseResponseDTO> teacherCoursesList = teacherCourses.stream()
                 .map(c -> CourseResponseDTO.builder()
                         .courseName(c.getName())
                         .courseTypeName(c.getType().name())
                         .build()
-                ).toList();
+                ).collect(Collectors.toSet());
         return TeacherResponseDTO.builder()
                 .teacherId(teacher.getId().toString())
                 .teacherName(teacher.getName())

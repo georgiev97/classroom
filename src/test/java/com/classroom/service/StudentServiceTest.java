@@ -260,8 +260,8 @@ public class StudentServiceTest {
         assertEquals(STUDENT_NAME_1, response.getStudentName());
         assertEquals(22, response.getStudentAge());
         assertEquals(GROUP_NAME_1, response.getStudentGroupName());
-        assertEquals(COURSE_NAME_MATHEMATICS, response.getStudentCourses().get(0).getCourseName());
-        assertEquals(CourseType.MAIN.name(), response.getStudentCourses().get(0).getCourseTypeName());
+        assertEquals(COURSE_NAME_MATHEMATICS, response.getStudentCourses().iterator().next().getCourseName());
+        assertEquals(CourseType.MAIN.name(), response.getStudentCourses().iterator().next().getCourseTypeName());
         verify(studentRepository, times(1)).findById(STUDENT_ID);
         verify(courseRepository, times(1)).findByName(COURSE_NAME_MATHEMATICS);
         verify(studentRepository, times(1)).save(any(Student.class));

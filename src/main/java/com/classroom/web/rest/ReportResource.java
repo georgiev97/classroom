@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/reports")
@@ -33,17 +33,17 @@ public class ReportResource {
     }
 
     @GetMapping("/students/course/{courseName}")
-    public ResponseEntity<List<StudentResponseDTO>> getStudentsByCourse(@PathVariable String courseName) {
+    public ResponseEntity<Set<StudentResponseDTO>> getStudentsByCourse(@PathVariable String courseName) {
         return ResponseEntity.ok(reportService.getStudentsByCourse(courseName));
     }
 
     @GetMapping("/students/group/{groupName}")
-    public ResponseEntity<List<StudentResponseDTO>> getStudentsByGroup(@PathVariable String groupName) {
+    public ResponseEntity<Set<StudentResponseDTO>> getStudentsByGroup(@PathVariable String groupName) {
         return ResponseEntity.ok(reportService.getStudentsByGroup(groupName));
     }
 
     @GetMapping("/students/course/{courseName}/age/{age}")
-    public ResponseEntity<List<StudentResponseDTO>> getStudentsInCourseOlderThan(@PathVariable String courseName, Integer age) {
+    public ResponseEntity<Set<StudentResponseDTO>> getStudentsInCourseOlderThan(@PathVariable String courseName, Integer age) {
         return ResponseEntity.ok(reportService.getStudentsByAgeAndCourse(age, courseName));
     }
 

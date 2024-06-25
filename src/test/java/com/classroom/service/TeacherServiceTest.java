@@ -257,8 +257,8 @@ public class TeacherServiceTest {
         assertEquals(TEACHER_NAME_1, response.getTeacherName());
         assertEquals(44, response.getTeacherAge());
         assertEquals(GROUP_NAME_1, response.getTeacherGroupName());
-        assertEquals(COURSE_NAME_MATHEMATICS, response.getTeacherCourses().get(0).getCourseName());
-        assertEquals(CourseType.MAIN.name(), response.getTeacherCourses().get(0).getCourseTypeName());
+        assertEquals(COURSE_NAME_MATHEMATICS, response.getTeacherCourses().iterator().next().getCourseName());
+        assertEquals(CourseType.MAIN.name(), response.getTeacherCourses().iterator().next().getCourseTypeName());
         verify(teacherRepository, times(1)).findById(TEACHER_ID);
         verify(courseRepository, times(1)).findByName(COURSE_NAME_MATHEMATICS);
         verify(teacherRepository, times(1)).save(any(Teacher.class));
