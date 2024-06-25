@@ -30,33 +30,28 @@ public class CourseService {
         Course course = new Course(courseName, courseType);
         courseRepository.save(course);
 
-        return CourseResponseDTO.builder()
-                .courseName(courseName)
-                .courseTypeName(courseTypeName)
-                .build();
+        return mapEntityToDTO(course);
     }
 
     public List<CourseResponseDTO> getAllCourses() {
         return courseRepository
                 .findAll()
                 .stream()
-                .map(course ->
-                        CourseResponseDTO.builder()
-                                .courseName(course.getName())
-                                .courseTypeName(course.getType().toString())
-                                .build()
-                )
+                .map(this::mapEntityToDTO)
                 .toList();
     }
 
     public Optional<CourseResponseDTO> getCourseByName(String courseName) {
         return courseRepository
                 .findByName(courseName)
-                .map(course ->
-                        CourseResponseDTO.builder()
-                                .courseName(course.getName())
-                                .courseTypeName(course.getType().toString())
-                                .build()
-                );
+                .map(this::mapEntityToDTO);
+    }
+
+    private CourseResponseDTO mapEntityToDTO(Course course) {
+        return CourseResponseDTO.builder()
+                .courseName(course.getName())
+                .courseTypeName(course.getType().toString())
+                .build();
+
     }
 }

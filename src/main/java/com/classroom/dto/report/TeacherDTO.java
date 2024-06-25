@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentAndTeacherReportResponseDTO {
+public class TeacherDTO {
 
-    private Set<StudentDTO> students = new HashSet<>();
-    private Set<TeacherDTO> teachers = new HashSet<>();
-
+    private String teacherId;
+    private String teacherName;
+    private int teacherAge;
+    private String teacherGroupName;
+    private Set<String> courseNames;
 }

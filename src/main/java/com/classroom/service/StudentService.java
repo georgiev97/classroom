@@ -50,9 +50,8 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             throw new EntityExistsException(String.format(STUDENT_ALREADY_EXISTS, studentName));
         }
-        Student student = new Student(studentName, age, groupName);
 
-        studentRepository.save(student);
+        Student student = studentRepository.save(new Student(studentName, age, groupName));
         return StudentResponseDTO.builder()
                 .studentId(student.getId().toString())
                 .studentName(student.getName())
@@ -71,6 +70,7 @@ public class StudentService {
         student.setAge(updateStudentRequest.getStudentAge());
         student.setStudentGroup(updateStudentRequest.getStudentGroupName());
 
+        studentRepository.save(student);
         return StudentResponseDTO.builder()
                 .studentId(student.getId().toString())
                 .studentName(student.getName())
@@ -171,5 +171,4 @@ public class StudentService {
                 .toList()
                 .stream().noneMatch(name -> name.equals(leaveStudentCourse));
     }
-
 }

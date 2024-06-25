@@ -63,6 +63,13 @@ public class Student {
         this.courses = new HashSet<>(courses);
     }
 
+    public Student(UUID id, String name, int age, String studentGroup) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.studentGroup = studentGroup;
+    }
+
     public Student(String name, int age, String studentGroup) {
         this.name = name;
         this.age = age;

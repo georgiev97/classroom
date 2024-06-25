@@ -6,6 +6,7 @@ import com.classroom.dto.teacher.EnrollTeacherRequestDTO;
 import com.classroom.dto.teacher.LeaveTeacherCourseRequestDTO;
 import com.classroom.dto.teacher.TeacherResponseDTO;
 import com.classroom.entity.Course;
+import com.classroom.entity.Student;
 import com.classroom.entity.Teacher;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.TeacherRepository;
@@ -50,9 +51,8 @@ public class TeacherService {
         if (existingTeacher.isPresent()) {
             throw new EntityExistsException(String.format(TEACHER_ALREADY_EXISTS, teacherName));
         }
-        Teacher teacher = new Teacher(teacherName, age, groupName);
 
-        teacherRepository.save(teacher);
+        Teacher teacher = teacherRepository.save(new Teacher(teacherName, age, groupName));
         return TeacherResponseDTO.builder()
                 .teacherId(teacher.getId().toString())
                 .teacherName(teacher.getName())
@@ -71,6 +71,7 @@ public class TeacherService {
         teacher.setAge(updateTeacherRequest.getTeacherAge());
         teacher.setTeacherGroup(updateTeacherRequest.getTeacherGroupName());
 
+        teacherRepository.save(teacher);
         return TeacherResponseDTO.builder()
                 .teacherId(teacher.getId().toString())
                 .teacherName(teacher.getName())
@@ -179,5 +180,4 @@ public class TeacherService {
                 .toList()
                 .stream().noneMatch(name -> name.equals(leaveCourse));
     }
-
 }

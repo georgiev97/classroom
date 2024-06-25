@@ -17,12 +17,18 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     Optional<Student> findByNameAndStudentGroupAndAge(String studentName, String studentGroup, int age);
 
-    @Query("SELECT student FROM Student student JOIN student.courses courses WHERE courses.name = :courseName")
+    @Query("SELECT student FROM Student student JOIN FETCH student.courses courses WHERE courses.name = :courseName")
     Set<Student> findStudentsByCourse(String courseName);
 
     @Query("SELECT student FROM Student student WHERE student.studentGroup = :groupName")
     Set<Student> findStudentsByGroup(String groupName);
 
-    @Query("SELECT student FROM Student student JOIN student.courses courses WHERE student.age > :age AND courses.name = :courseName")
+    @Query("SELECT student FROM Student student JOIN FETCH student.courses courses WHERE student.age > :age AND courses.name = :courseName")
     Set<Student> findStudentsOlderThanAgeInCourse(int age, String courseName);
+
+    @Query("SELECT student FROM Student student " +
+            "JOIN FETCH student.courses course " +
+            "WHERE course.name = :courseName " +
+            "AND  student.studentGroup = :groupName " )
+    Set<Student> findStudentsByCourseAndGroup(String courseName, String groupName);
 }

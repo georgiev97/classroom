@@ -21,7 +21,6 @@ public class CourseRepositoryTest {
 
     private static final String COURSE_NAME_MATHEMATICS = "Mathematics";
     private static final String COURSE_NAME_HISTORY = "History";
-
     private static final String COURSE_NAME_SCIENCE = "Science";
 
     @Autowired
@@ -29,6 +28,7 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        // Create Courses
         Course course1 = new Course(COURSE_NAME_MATHEMATICS, CourseType.MAIN);
         Course course2 = new Course(COURSE_NAME_HISTORY, CourseType.SECONDARY);
         Course course3 = new Course(COURSE_NAME_SCIENCE, CourseType.MAIN);
