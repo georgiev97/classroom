@@ -7,6 +7,7 @@ import com.classroom.dto.teacher.TeacherResponseDTO;
 import com.classroom.entity.Course;
 import com.classroom.entity.Teacher;
 import com.classroom.enumartion.CourseType;
+import com.classroom.exception.UnprocessableEntityException;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.TeacherRepository;
 import jakarta.persistence.EntityExistsException;
@@ -276,7 +277,7 @@ public class TeacherServiceTest {
         when(teacherRepository.findById(TEACHER_ID)).thenReturn(Optional.empty());
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             teacherService.enrollToCourse(request);
         });
 
@@ -308,7 +309,7 @@ public class TeacherServiceTest {
         when(teacherRepository.findById(TEACHER_ID)).thenReturn(Optional.of(savedTeacher));
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        UnprocessableEntityException exception = assertThrows(UnprocessableEntityException.class, () -> {
             teacherService.enrollToCourse(request);
         });
 
@@ -371,7 +372,7 @@ public class TeacherServiceTest {
         when(teacherRepository.findById(TEACHER_ID)).thenReturn(Optional.empty());
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             teacherService.removeTeacherFromCourse(request);
         });
 
@@ -400,7 +401,7 @@ public class TeacherServiceTest {
         when(teacherRepository.findById(TEACHER_ID)).thenReturn(Optional.of(savedTeacher));
 
         // Act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        UnprocessableEntityException exception = assertThrows(UnprocessableEntityException.class, () -> {
             teacherService.removeTeacherFromCourse(request);
         });
 

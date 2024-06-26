@@ -7,6 +7,7 @@ import com.classroom.dto.student.StudentResponseDTO;
 import com.classroom.entity.Course;
 import com.classroom.entity.Student;
 import com.classroom.enumartion.CourseType;
+import com.classroom.exception.UnprocessableEntityException;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.StudentRepository;
 import jakarta.persistence.EntityExistsException;
@@ -169,7 +170,8 @@ public class StudentServiceTest {
         assertEquals(request.getStudentName(), response.getStudentName());
         assertEquals(request.getStudentAge(), response.getStudentAge());
         verify(studentRepository, times(1)).findById(STUDENT_ID);
-        verify(studentRepository, times(1)).save(any(Student.class));}
+        verify(studentRepository, times(1)).save(any(Student.class));
+    }
 
     @Test
     public void testUpdateStudentFailure() {
@@ -279,7 +281,7 @@ public class StudentServiceTest {
         when(studentRepository.findById(STUDENT_ID)).thenReturn(Optional.empty());
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             studentService.enrollToCourse(request);
         });
 
@@ -311,7 +313,7 @@ public class StudentServiceTest {
         when(studentRepository.findById(STUDENT_ID)).thenReturn(Optional.of(savedStudent));
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        UnprocessableEntityException exception = assertThrows(UnprocessableEntityException.class, () -> {
             studentService.enrollToCourse(request);
         });
 
@@ -374,7 +376,7 @@ public class StudentServiceTest {
         when(studentRepository.findById(STUDENT_ID)).thenReturn(Optional.empty());
 
         // act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             studentService.removeStudentFromCourse(request);
         });
 
@@ -403,7 +405,7 @@ public class StudentServiceTest {
         when(studentRepository.findById(STUDENT_ID)).thenReturn(Optional.of(savedStudent));
 
         // Act
-        EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
+        UnprocessableEntityException exception = assertThrows(UnprocessableEntityException.class, () -> {
             studentService.removeStudentFromCourse(request);
         });
 

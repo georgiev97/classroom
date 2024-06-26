@@ -8,12 +8,14 @@ import com.classroom.repository.CourseRepository;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CourseService {
 
     private static final String COURSE_ALREADY_EXISTS = "Course with name %s already exists";

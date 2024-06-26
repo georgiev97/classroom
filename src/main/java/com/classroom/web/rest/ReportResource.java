@@ -19,7 +19,7 @@ public class ReportResource {
 
     private final ReportService reportService;
 
-    @GetMapping("/{courseName}/{groupName}")
+    @GetMapping("/courses/{courseName}/groups/{groupName}")
     public ResponseEntity<StudentAndTeacherReportResponseDTO> getReportTeacherAndStudentsFroCourseAndGroup(
             @PathVariable String courseName,
             @PathVariable String groupName
@@ -43,7 +43,10 @@ public class ReportResource {
     }
 
     @GetMapping("/students/course/{courseName}/age/{age}")
-    public ResponseEntity<Set<StudentResponseDTO>> getStudentsInCourseOlderThan(@PathVariable String courseName, Integer age) {
+    public ResponseEntity<Set<StudentResponseDTO>> getStudentsInCourseOlderThan(
+            @PathVariable String courseName,
+            @PathVariable  Integer age
+    ) {
         return ResponseEntity.ok(reportService.getStudentsByAgeAndCourse(age, courseName));
     }
 

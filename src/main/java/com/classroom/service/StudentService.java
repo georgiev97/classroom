@@ -7,6 +7,7 @@ import com.classroom.dto.student.LeaveStudentCourseRequestDTO;
 import com.classroom.dto.student.StudentResponseDTO;
 import com.classroom.entity.Course;
 import com.classroom.entity.Student;
+import com.classroom.exception.UnprocessableEntityException;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.StudentRepository;
 import jakarta.persistence.EntityExistsException;
@@ -82,17 +83,17 @@ public class StudentService {
     public StudentResponseDTO enrollToCourse(EnrollStudentRequestDTO enrollStudentRequest) {
         Optional<Student> existingStudent = studentRepository.findById(UUID.fromString(enrollStudentRequest.getStudentId()));
         if (existingStudent.isEmpty()) {
-            throw new EntityExistsException(String.format(STUDENT_DOES_NOT_EXISTS, enrollStudentRequest.getStudentId()));
+            throw new EntityNotFoundException(String.format(STUDENT_DOES_NOT_EXISTS, enrollStudentRequest.getStudentId()));
         }
         Student student = existingStudent.get();
         Set<Course> studentCourses = student.getCourses();
         if (studentAlreadyEnrolledForCourse(studentCourses, enrollStudentRequest.getCourseName())) {
-            throw new EntityExistsException(String.format(STUDENT_ALREADY_ENROLLED_FOR_THIS_COURSE, enrollStudentRequest.getStudentId(), enrollStudentRequest.getCourseName()));
+            throw new UnprocessableEntityException(String.format(STUDENT_ALREADY_ENROLLED_FOR_THIS_COURSE, enrollStudentRequest.getStudentId(), enrollStudentRequest.getCourseName()));
         }
 
         Optional<Course> existingCourse = courseRepository.findByName(enrollStudentRequest.getCourseName());
         if (existingCourse.isEmpty()) {
-            throw new EntityExistsException(String.format(COURSE_DOES_NOT_EXISTS, enrollStudentRequest.getCourseName()));
+            throw new EntityNotFoundException(String.format(COURSE_DOES_NOT_EXISTS, enrollStudentRequest.getCourseName()));
         }
         Course course = existingCourse.get();
         course.getStudents().add(student);
@@ -117,17 +118,17 @@ public class StudentService {
     public StudentResponseDTO removeStudentFromCourse(LeaveStudentCourseRequestDTO leaveStudentCourseRequest) {
         Optional<Student> existingStudent = studentRepository.findById(UUID.fromString(leaveStudentCourseRequest.getStudentId()));
         if (existingStudent.isEmpty()) {
-            throw new EntityExistsException(String.format(STUDENT_DOES_NOT_EXISTS, leaveStudentCourseRequest.getStudentId()));
+            throw new EntityNotFoundException(String.format(STUDENT_DOES_NOT_EXISTS, leaveStudentCourseRequest.getStudentId()));
         }
         Student student = existingStudent.get();
         Set<Course> studentCourses = student.getCourses();
         if (studentIsNotEnrolledForCourse(studentCourses, leaveStudentCourseRequest.getCourseName())) {
-            throw new EntityExistsException(String.format(STUDENT_NOT_ENROLLED_FOR_THIS_COURSE, leaveStudentCourseRequest.getStudentId(), leaveStudentCourseRequest.getCourseName()));
+            throw new UnprocessableEntityException(String.format(STUDENT_NOT_ENROLLED_FOR_THIS_COURSE, leaveStudentCourseRequest.getStudentId(), leaveStudentCourseRequest.getCourseName()));
         }
 
         Optional<Course> existingCourse = courseRepository.findByName(leaveStudentCourseRequest.getCourseName());
         if (existingCourse.isEmpty()) {
-            throw new EntityExistsException(String.format(COURSE_DOES_NOT_EXISTS, leaveStudentCourseRequest.getCourseName()));
+            throw new EntityNotFoundException(String.format(COURSE_DOES_NOT_EXISTS, leaveStudentCourseRequest.getCourseName()));
         }
         Course course = existingCourse.get();
         student.getCourses().remove(course);

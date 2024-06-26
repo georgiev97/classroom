@@ -4,22 +4,29 @@ import com.classroom.dto.course.CourseResponseDTO;
 import com.classroom.dto.report.StudentAndTeacherReportResponseDTO;
 import com.classroom.dto.student.StudentResponseDTO;
 import com.classroom.dto.teacher.TeacherResponseDTO;
+import com.classroom.entity.Course;
 import com.classroom.entity.Student;
 import com.classroom.entity.Teacher;
 import com.classroom.enumartion.CourseType;
 import com.classroom.repository.CourseRepository;
 import com.classroom.repository.StudentRepository;
 import com.classroom.repository.TeacherRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReportService {
+
+    private static final String COURSE_DOES_NOT_EXISTS = "Course with name %s does not exists";
 
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
@@ -39,7 +46,11 @@ public class ReportService {
     }
 
     public Set<StudentResponseDTO> getStudentsByCourse(String courseName) {
-        Set<Student> students = studentRepository.findStudentsByCourse(courseName);
+        Optional<Course> existingCourse = courseRepository.findByName(courseName);
+        if (existingCourse.isEmpty()) {
+            throw new EntityNotFoundException(String.format(COURSE_DOES_NOT_EXISTS, courseName));
+        }
+        Set<Student> students = studentRepository.findStudentsByCourse(existingCourse.get().getName());
         return mapStudentsToDTO(students);
     }
 
@@ -49,13 +60,21 @@ public class ReportService {
     }
 
     public Set<StudentResponseDTO> getStudentsByAgeAndCourse(int age, String courseName) {
-        Set<Student> students = studentRepository.findStudentsOlderThanAgeInCourse(age, courseName);
+        Optional<Course> existingCourse = courseRepository.findByName(courseName);
+        if (existingCourse.isEmpty()) {
+            throw new EntityNotFoundException(String.format(COURSE_DOES_NOT_EXISTS, courseName));
+        }
+        Set<Student> students = studentRepository.findStudentsOlderThanAgeInCourse(age, existingCourse.get().getName());
         return mapStudentsToDTO(students);
     }
 
     public StudentAndTeacherReportResponseDTO getStudentsAndTeachersByCourseAndGroup(String courseName, String groupName) {
-        Set<Student> students = studentRepository.findStudentsByCourseAndGroup(courseName, groupName);
-        Set<Teacher> teachers = teacherRepository.findTeachersByCourseAndGroup(courseName, groupName);
+        Optional<Course> existingCourse = courseRepository.findByName(courseName);
+        if (existingCourse.isEmpty()) {
+            throw new EntityNotFoundException(String.format(COURSE_DOES_NOT_EXISTS, courseName));
+        }
+        Set<Student> students = studentRepository.findStudentsByCourseAndGroup(existingCourse.get().getName(), groupName);
+        Set<Teacher> teachers = teacherRepository.findTeachersByCourseAndGroup(existingCourse.get().getName(), groupName);
 
         Set<StudentResponseDTO> studentsResponse = mapStudentsToDTO(students);
         Set<TeacherResponseDTO> teacherResponse = mapTeachersToDTO(teachers);
