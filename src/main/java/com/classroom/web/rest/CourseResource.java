@@ -29,7 +29,7 @@ public class CourseResource {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/{courseName}")
+    @GetMapping("/course/{courseName}")
     public ResponseEntity<CourseResponseDTO> getCourseByName(
             @PathVariable String courseName
     ) {

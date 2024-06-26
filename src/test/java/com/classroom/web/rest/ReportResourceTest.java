@@ -200,7 +200,7 @@ public class ReportResourceTest {
 
         // act
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/reports/courses/{courseName}/groups/{groupName}", COURSE_NAME_MATHEMATICS, GROUP_NAME_1))
+                        MockMvcRequestBuilders.get("/api/v1/reports/course/{courseName}/group/{groupName}", COURSE_NAME_MATHEMATICS, GROUP_NAME_1))
                 .andExpect(status().isOk())
                 .andReturn();
 

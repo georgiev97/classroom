@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     @Query("SELECT COUNT(student) FROM Student student")
-    long studentsCount();
+    long countStudents();
 
     Optional<Student> findByNameAndStudentGroupAndAge(String studentName, String studentGroup, int age);
 

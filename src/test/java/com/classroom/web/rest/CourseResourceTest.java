@@ -78,7 +78,7 @@ public class CourseResourceTest {
 
         // act
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/courses/{courseName}", COURSE_NAME_HISTORY))
+                        MockMvcRequestBuilders.get("/api/v1/courses/course/{courseName}", COURSE_NAME_HISTORY))
                 .andExpect(status().isOk())
                 .andReturn();
 

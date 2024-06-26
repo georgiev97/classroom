@@ -33,11 +33,11 @@ public class ReportService {
     private final TeacherRepository teacherRepository;
 
     public long countStudents() {
-        return studentRepository.studentsCount();
+        return studentRepository.countStudents();
     }
 
     public long countTeachers() {
-        return teacherRepository.teachersCount();
+        return teacherRepository.countTeachers();
     }
 
     public long countCoursesByType(String courseType) {

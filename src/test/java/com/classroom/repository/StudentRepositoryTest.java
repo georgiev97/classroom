@@ -58,7 +58,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void whenCountStudentsThenReturnCorrectCount() {
-        long count = studentRepository.studentsCount();
+        long count = studentRepository.countStudents();
         assertEquals(3, count);
     }
 

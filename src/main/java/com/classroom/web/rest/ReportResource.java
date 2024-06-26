@@ -19,7 +19,7 @@ public class ReportResource {
 
     private final ReportService reportService;
 
-    @GetMapping("/courses/{courseName}/groups/{groupName}")
+    @GetMapping("/course/{courseName}/group/{groupName}")
     public ResponseEntity<StudentAndTeacherReportResponseDTO> getReportTeacherAndStudentsFroCourseAndGroup(
             @PathVariable String courseName,
             @PathVariable String groupName

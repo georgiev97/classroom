@@ -74,7 +74,7 @@ public class ReportServiceTest {
     @Test
     public void testStudentCountReturnsValue() {
         // arrange
-        when(studentRepository.studentsCount()).thenReturn(2L);
+        when(studentRepository.countStudents()).thenReturn(2L);
 
         // act
         long result = reportService.countStudents();
@@ -86,7 +86,7 @@ public class ReportServiceTest {
     @Test
     public void testTeacherCountReturnsValue() {
         // arrange
-        when(teacherRepository.teachersCount()).thenReturn(2L);
+        when(teacherRepository.countTeachers()).thenReturn(2L);
 
         // act
         long result = reportService.countTeachers();
